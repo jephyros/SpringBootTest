@@ -12,15 +12,25 @@ public class MyDevice extends AWSIotDevice {
     public MyDevice(String thingName) {
         super(thingName);
     }
+
     @AWSIotDeviceProperty
-    private String someValue;
+    private String sensor;
 
 
     @Override
     public void onShadowUpdate(String jsonState) {
         //super.onShadowUpdate(jsonState);
         //To-do code
-        System.out.println("onShadowUpdate Event : " + jsonState.toString());
+        System.out.println("onShadowUpdate Event : " + jsonState.toString()  + " sensor valuable :" + this.sensor);
 
+
+    }
+
+    public String getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(String sensor) {
+        this.sensor = sensor;
     }
 }

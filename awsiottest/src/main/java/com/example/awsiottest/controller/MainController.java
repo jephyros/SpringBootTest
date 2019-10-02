@@ -31,6 +31,23 @@ public class MainController {
 
     }
 
+    @RequestMapping("/shadowsend")
+    public String shadowsend(){
+        awsIotService.shadowtest();
+        //awsIotService.shadowNonblockingSend();
+
+        return "shadowsend";
+
+    }
+
+    @RequestMapping("/shadowlisten")
+    public String shadowlisten(){
+        //awsIotService.mqttsubscribe2();
+
+        return "shadowlisten";
+
+    }
+
     @RequestMapping("/about")
     public String about(){
 
