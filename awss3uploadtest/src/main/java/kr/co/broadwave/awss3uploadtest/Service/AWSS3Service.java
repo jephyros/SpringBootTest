@@ -72,4 +72,26 @@ public class AWSS3Service {
         Resource resource = new ByteArrayResource(bytes);
         return resource;
     }
+    //RESTAPI 파일호출시
+    /*
+        Resource resource = imageService.loadFileAsResource(date, fileName);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            log.info("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
+     */
 }
