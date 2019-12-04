@@ -1,8 +1,6 @@
 package kr.co.broadwave.awss3uploadtest.config;
 
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -10,8 +8,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
  * @author InSeok
@@ -19,8 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Remark :
  */
 @Configuration
-@EnableWebMvc
-public class WebMvcConfiguration implements WebMvcConfigurer {
+public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Value("${aci.aws.s3.access.id}")
     private String AWSS3ACCESSID;
 
