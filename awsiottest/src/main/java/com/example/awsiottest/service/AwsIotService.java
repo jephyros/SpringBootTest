@@ -5,6 +5,7 @@ import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.amazonaws.services.iot.client.AWSIotQos;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Random;
 
 /**
@@ -15,20 +16,19 @@ import java.util.Random;
 @Service
 public class AwsIotService {
 
-    private String clientEndpoint = "xxx-ats.iot.ap-xxx-2.amazonaws.com";       // replace <prefix> and <region> with your own
+    private String clientEndpoint = "amazon.com";       // replace <prefix> and <region> with your own
     private String clientId = "springthing"; // 고유이름 아무거나?
 
     //AWSIotMqttClient iam 에서 AWSIoTDataAccess 권한을주면됨
-    private AWSIotMqttClient client = new AWSIotMqttClient(clientEndpoint, clientId, "xxx", "xxx");
+    private AWSIotMqttClient client = new AWSIotMqttClient(clientEndpoint, clientId, "cxcxcxxc", "sdfsd");
 
 
     private String thingName = "mqttTest2";                    // replace with your AWS IoT Thing name
+
+
     //private AWSIotDevice device = new AWSIotDevice(thingName);
+
     private MyDevice device = new MyDevice(thingName);
-
-
-
-
 
 
     public AwsIotService() {
@@ -127,9 +127,12 @@ public class AwsIotService {
             // Update shadow document
             Random random = new Random();
             int i = random.nextInt(100);
-            String state = "{\"state\":{\"desired\":{\"sensor\":" + i + "}}}";
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String sendstr = "R" + timestamp.getTime();
+            String state = "{\"state\":{\"desired\":{\"C001\":\"" + sendstr + "\"}}}";
 
             device.update(state);
+
             System.out.println("shadowupdate");
 
             // Get the entire shadow document

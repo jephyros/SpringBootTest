@@ -33,8 +33,8 @@ public class MainController {
 
     @RequestMapping("/shadowsend")
     public String shadowsend(){
-        awsIotService.shadowtest();
-        //awsIotService.shadowNonblockingSend();
+        //awsIotService.shadowtest();
+        awsIotService.shadowNonblockingSend();
 
         return "shadowsend";
 

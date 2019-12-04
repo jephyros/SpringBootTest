@@ -37,4 +37,9 @@ public class AwsIotServiceTest {
     public void mqttsubscribe() throws Exception{
         awsIotService.mqttsubscribe();
     }
+
+    @Test
+    public void shadownonblocktest() throws Exception{
+        awsIotService.shadowNonblockingSend();
+    }
 }
