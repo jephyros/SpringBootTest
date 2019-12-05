@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author InSeok
@@ -27,6 +28,10 @@ public class AWSS3Service {
 
     @Value("${aci.aws.s3.bucket}")
     private String AWSBUCKET;
+    @Value("${base.upload.directory}")
+    private String uploadPath;
+
+
 
     private final AmazonS3 s3Client;
 
@@ -41,8 +46,16 @@ public class AWSS3Service {
         omd.setContentType(multipartFile.getContentType());
         omd.setContentLength(multipartFile.getSize());
         omd.setHeader("filename", multipartFile.getOriginalFilename());
-        String awsFilePath =AWSBUCKET + "/" + date.format(new Date());
-        String fileName = multipartFile.getOriginalFilename();
+        String awsFilePath =AWSBUCKET+"/" + uploadPath + "/" + date.format(new Date());
+
+
+        // 파일 중복명 처리
+        String genId = UUID.randomUUID().toString();
+        genId = genId.replace("-", "");
+        String originalfileName = multipartFile.getOriginalFilename();
+        String fileExtension = getExtension(originalfileName);
+        String fileName = genId + "." + fileExtension;
+
 
         // Copy file to the target location (Replacing existing file with the same name)
         PutObjectResult putObjectResult = s3Client.putObject(new PutObjectRequest(awsFilePath, fileName,
@@ -53,14 +66,14 @@ public class AWSS3Service {
         System.out.println("filesize: " + multipartFile.getSize() );
         System.out.println("OriginalFilename: " + multipartFile.getOriginalFilename() );
         System.out.println("File path : '" + awsFilePath +"'");
-        System.out.println("File name : '" + storedFileName +"'");
+        System.out.println("File name : '" + fileName +"'");
 
 
     }
 
-    public void deleteObject(String date, String storedFileName) throws AmazonServiceException {
+    public void deleteObject(String bucketPath, String fileName) throws AmazonServiceException {
 
-        s3Client.deleteObject(new DeleteObjectRequest(AWSBUCKET + "/" + date, storedFileName));
+        s3Client.deleteObject(new DeleteObjectRequest(AWSBUCKET + "/" + bucketPath, fileName));
 
     }
 
@@ -72,6 +85,17 @@ public class AWSS3Service {
         Resource resource = new ByteArrayResource(bytes);
         return resource;
     }
+
+    private String getExtension(String fileName) {
+        int dotPosition = fileName.lastIndexOf('.');
+
+        if (-1 != dotPosition && fileName.length() - 1 > dotPosition) {
+            return fileName.substring(dotPosition + 1);
+        } else {
+            return "";
+        }
+    }
+
     //RESTAPI 파일호출시
     /*
         Resource resource = imageService.loadFileAsResource(date, fileName);
