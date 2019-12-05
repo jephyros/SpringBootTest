@@ -22,8 +22,8 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Value("${aci.aws.s3.access.key}")
     private String AWSS3ACCESSKEY;
-    @Value("${aci.aws.region}")
 
+    @Value("${aci.aws.region}")
     private String AWSREGION;
 
     @Bean
