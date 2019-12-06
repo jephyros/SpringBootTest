@@ -77,13 +77,13 @@ public class AWSS3Service {
 
     }
 
-    public Resource getObject(String date, String storedFileName) throws IOException {
+    public byte[] getObject(String date, String storedFileName) throws IOException {
         S3Object o = s3Client.getObject(new GetObjectRequest(AWSBUCKET + "/" + date, storedFileName));
         S3ObjectInputStream objectInputStream = o.getObjectContent();
         byte[] bytes = IOUtils.toByteArray(objectInputStream);
-
-        Resource resource = new ByteArrayResource(bytes);
-        return resource;
+        return bytes;
+        //Resource resource = new ByteArrayResource(bytes);
+        //return resource;
     }
 
     private String getExtension(String fileName) {

@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 
 /**
@@ -38,5 +40,21 @@ public class MainController {
         System.out.println(fileid);
         awss3Service.deleteObject("uploadfiles/20191205","8760546197f5408691e00786919c15b4.jpg");
         return "sucess";
+    }
+
+    @RequestMapping("filedownload/{fileid}")
+    @ResponseBody
+    public byte[] downProcess(HttpServletResponse response,
+                              @PathVariable Long fileid) throws IOException {
+
+
+
+        byte[] bytes = awss3Service.getObject("uploadfiles/20191205","8760546197f5408691e00786919c15b4.jpg");
+
+
+        response.setHeader("Content-Disposition",
+                "attachment;filename=\"" + URLEncoder.encode("filename", "UTF-8") + "\"");
+        response.setContentLength(bytes.length);
+        return bytes;
     }
 }
